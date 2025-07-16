@@ -7,6 +7,48 @@ struct ElectricityBindingController: RouteCollection {
 
         electricityBindings.post(use: self.create)
         electricityBindings.get(":deviceToken", use: self.getSchedules)
+        electricityBindings.delete(":deviceToken", use: self.cancelSchedules)
+        electricityBindings.delete([":deviceToken", ":id"], use: self.cancelScheduleById)
+    }
+
+    @Sendable
+    func cancelSchedules(req: Request) async throws -> HTTPStatus {
+        let deviceToken = try req.parameters.require("deviceToken")
+
+        let bindings = try await ElectricityBinding.query(on: req.db)
+            .filter(\.$deviceToken, .equal, deviceToken)
+            .all()
+
+        for binding in bindings {
+            try await ElectricityJob.shared.cancelJob(
+                app: req.application, electricityBinding: binding)
+            try await binding.delete(on: req.db)
+        }
+
+        return .ok
+    }
+
+    @Sendable
+    func cancelScheduleById(req: Request) async throws -> [ElectricityBindingDTO] {
+        let deviceToken = try req.parameters.require("deviceToken")
+        let id = try req.parameters.require("id")
+
+        guard let uuid = UUID(uuidString: id) else {
+            throw Abort(.badRequest, reason: "Invalid UUID format for ID")
+        }
+
+        let binding = try await ElectricityBinding.query(on: req.db)
+            .filter(\.$deviceToken, .equal, deviceToken)
+            .filter(\.$id, .equal, uuid)
+            .first()
+        guard let binding = binding else {
+            throw Abort(.notFound, reason: "ElectricityBinding not found")
+        }
+
+        try await ElectricityJob.shared.cancelJob(app: req.application, electricityBinding: binding)
+        try await binding.delete(on: req.db)
+
+        return try await getSchedules(req: req)
     }
 
     @Sendable

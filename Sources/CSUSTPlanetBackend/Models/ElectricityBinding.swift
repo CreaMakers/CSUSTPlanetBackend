@@ -45,8 +45,14 @@ final class ElectricityBinding: Model, @unchecked Sendable {
 
     func toDTO() -> ElectricityBindingDTO {
         .init(
-            studentId: self.studentId, deviceToken: self.deviceToken, campus: self.campus,
-            building: self.building, room: self.room, scheduleHour: self.scheduleHour,
-            scheduleMinute: self.scheduleMinute)
+            id: self.id,
+            studentId: self.studentId,
+            deviceToken: self.deviceToken,
+            campus: self.campus,
+            building: self.building,
+            room: self.room,
+            scheduleHour: self.scheduleHour,
+            scheduleMinute: self.scheduleMinute
+        )
     }
 }

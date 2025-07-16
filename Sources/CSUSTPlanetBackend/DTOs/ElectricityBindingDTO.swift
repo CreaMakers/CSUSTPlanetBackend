@@ -2,6 +2,7 @@ import Fluent
 import Vapor
 
 struct ElectricityBindingDTO: Content {
+    var id: UUID?
     var studentId: String
     var deviceToken: String
     var campus: String
