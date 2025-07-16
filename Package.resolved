@@ -1,6 +1,15 @@
 {
-  "originHash" : "a013a381f12a5f14f17821fbd5bb993f8361f4f6547f20bf18d27116a96c21ce",
+  "originHash" : "083cac8f101b7386297aaf5151b853e13cc5e8119b060c260ba496721b9fe7b7",
   "pins" : [
+    {
+      "identity" : "alamofire",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Alamofire/Alamofire.git",
+      "state" : {
+        "revision" : "513364f870f6bfc468f9d2ff0a95caccc10044c5",
+        "version" : "5.10.2"
+      }
+    },
     {
       "identity" : "async-http-client",
       "kind" : "remoteSourceControl",
@@ -26,6 +35,15 @@
       "state" : {
         "revision" : "742f624a998cba2a9e653d9b1e91ad3f3a5dff6b",
         "version" : "4.15.2"
+      }
+    },
+    {
+      "identity" : "csustkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/zHElEARN/CSUSTKit.git",
+      "state" : {
+        "revision" : "15f320048cbfe4c7422b15b1a2fc0d489707efca",
+        "version" : "1.0.17"
       }
     },
     {
@@ -287,6 +305,15 @@
       "state" : {
         "revision" : "61e4ca4b81b9e09e2ec863b00c340eb13497dac6",
         "version" : "1.5.0"
+      }
+    },
+    {
+      "identity" : "swiftsoup",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/scinfu/SwiftSoup.git",
+      "state" : {
+        "revision" : "d1d6add8f277bd76992a0f7e72961a896609b707",
+        "version" : "2.9.5"
       }
     },
     {
