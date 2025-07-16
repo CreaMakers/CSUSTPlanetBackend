@@ -21,14 +21,17 @@ final class ElectricityBinding: Model, @unchecked Sendable {
     @Field(key: "room")
     var room: String
 
-    @Field(key: "schedule_time")
-    var scheduleTime: String
+    @Field(key: "schedule_hour")
+    var scheduleHour: Int
+
+    @Field(key: "schedule_minute")
+    var scheduleMinute: Int
 
     init() {}
 
     init(
         id: UUID? = nil, studentId: String, deviceToken: String, campus: String, building: String,
-        room: String, scheduleTime: String
+        room: String, scheduleHour: Int, scheduleMinute: Int
     ) {
         self.id = id
         self.studentId = studentId
@@ -36,6 +39,14 @@ final class ElectricityBinding: Model, @unchecked Sendable {
         self.campus = campus
         self.building = building
         self.room = room
-        self.scheduleTime = scheduleTime
+        self.scheduleHour = scheduleHour
+        self.scheduleMinute = scheduleMinute
+    }
+
+    func toDTO() -> ElectricityBindingDTO {
+        .init(
+            studentId: self.studentId, deviceToken: self.deviceToken, campus: self.campus,
+            building: self.building, room: self.room, scheduleHour: self.scheduleHour,
+            scheduleMinute: self.scheduleMinute)
     }
 }

@@ -7,7 +7,8 @@ struct ElectricityBindingDTO: Content {
     var campus: String
     var building: String
     var room: String
-    var scheduleTime: String
+    var scheduleHour: Int
+    var scheduleMinute: Int
 
     func toModel() -> ElectricityBinding {
         return ElectricityBinding(
@@ -16,7 +17,8 @@ struct ElectricityBindingDTO: Content {
             campus: campus,
             building: building,
             room: room,
-            scheduleTime: scheduleTime
+            scheduleHour: scheduleHour,
+            scheduleMinute: scheduleMinute
         )
     }
 }

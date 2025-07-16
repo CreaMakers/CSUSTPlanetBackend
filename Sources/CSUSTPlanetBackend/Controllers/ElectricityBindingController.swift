@@ -16,6 +16,17 @@ final class ElectricityBindingController: RouteCollection, Sendable {
         let electricityBindings = routes.grouped("electricity-bindings")
 
         electricityBindings.post(use: self.create)
+        electricityBindings.get(":deviceToken", use: self.getSchedules)
+    }
+
+    @Sendable
+    func getSchedules(req: Request) async throws -> [ElectricityBindingDTO] {
+        let deviceToken = try req.parameters.require("deviceToken")
+        let bindings = try await ElectricityBinding.query(on: req.db)
+            .filter(\.$deviceToken, .equal, deviceToken)
+            .all()
+
+        return bindings.map { $0.toDTO() }
     }
 
     @Sendable
