@@ -1,5 +1,5 @@
 {
-  "originHash" : "083cac8f101b7386297aaf5151b853e13cc5e8119b060c260ba496721b9fe7b7",
+  "originHash" : "760c7c48bd5953fc0470725fb7261bf10da792538bd9d8097c385c5b0fd10077",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -8,6 +8,24 @@
       "state" : {
         "revision" : "513364f870f6bfc468f9d2ff0a95caccc10044c5",
         "version" : "5.10.2"
+      }
+    },
+    {
+      "identity" : "apns",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vapor/apns.git",
+      "state" : {
+        "revision" : "be523e3dc2a054d1ab51cb610c015dbbffb1d1ac",
+        "version" : "5.0.0"
+      }
+    },
+    {
+      "identity" : "apnswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swift-server-community/APNSwift.git",
+      "state" : {
+        "revision" : "f407b435d28456c2568cc2713a226cd06a5d5736",
+        "version" : "6.1.0"
       }
     },
     {

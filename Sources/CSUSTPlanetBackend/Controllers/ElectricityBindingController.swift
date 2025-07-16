@@ -1,3 +1,4 @@
+import APNSCore
 import Vapor
 
 final class ElectricityBindingController: RouteCollection, Sendable {
@@ -35,6 +36,21 @@ final class ElectricityBindingController: RouteCollection, Sendable {
             )) != nil
         else {
             throw Abort(.badRequest, reason: "Invalid electricity data")
+        }
+
+        let alert = APNSAlertNotification(
+            alert: .init(title: .raw("电量定时查询设置成功"), body: .raw("您的宿舍\(binding.room)已成功绑定定时电量查询")),
+            expiration: .immediately,
+            priority: .immediately,
+            topic: "com.zhelearn.CSUSTPlanet",
+            badge: 0
+        )
+
+        guard
+            (try? await req.apns.client.sendAlertNotification(
+                alert, deviceToken: binding.deviceToken)) != nil
+        else {
+            throw Abort(.badRequest, reason: "Device token is invalid or APNS failed")
         }
 
         try await binding.save(on: req.db)
