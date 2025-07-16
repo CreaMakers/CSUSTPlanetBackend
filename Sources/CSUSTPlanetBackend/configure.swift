@@ -5,6 +5,7 @@ import FluentSQLiteDriver
 import NIOSSL
 import Vapor
 import VaporAPNS
+import VaporCron
 
 // configures your application
 public func configure(_ app: Application) async throws {
@@ -41,6 +42,11 @@ public func configure(_ app: Application) async throws {
         requestEncoder: JSONEncoder(),
         as: .default
     )
+
+    let bindings = try await ElectricityBinding.query(on: app.db).all()
+    for binding in bindings {
+        try await ElectricityJob.shared.schedule(app: app, electricityBinding: binding)
+    }
 
     // register routes
     try await routes(app)

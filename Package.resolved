@@ -1,5 +1,5 @@
 {
-  "originHash" : "760c7c48bd5953fc0470725fb7261bf10da792538bd9d8097c385c5b0fd10077",
+  "originHash" : "2f425a83943a752ad4e4149b5a5d5e23516d7106127c3d5c6faf9bec18564591",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -101,6 +101,15 @@
       }
     },
     {
+      "identity" : "niocronscheduler",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/MihaelIsaev/NIOCronScheduler.git",
+      "state" : {
+        "revision" : "aa67f5efde1c728772fcfc21a862412df83f14f1",
+        "version" : "2.1.0"
+      }
+    },
+    {
       "identity" : "routing-kit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/routing-kit.git",
@@ -134,6 +143,15 @@
       "state" : {
         "revision" : "3f4096bd7e0ca23c3b04cd1488f93c2d9a0c05ed",
         "version" : "1.11.6"
+      }
+    },
+    {
+      "identity" : "swifcron",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/MihaelIsaev/SwifCron.git",
+      "state" : {
+        "revision" : "51d388da749b002522261e6fe4171acf93ee1b74",
+        "version" : "2.0.0"
       }
     },
     {
@@ -341,6 +359,15 @@
       "state" : {
         "revision" : "3636f443474769147828a5863e81a31f6f30e92c",
         "version" : "4.115.1"
+      }
+    },
+    {
+      "identity" : "vaporcron",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/MihaelIsaev/VaporCron.git",
+      "state" : {
+        "revision" : "d6253e413b4bf306cbf5aac85ef33f1fe48de814",
+        "version" : "2.6.0"
       }
     },
     {

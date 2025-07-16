@@ -9,15 +9,15 @@ actor ElectricityHelper {
     private let campusCardHelper = CampusCardHelper()
     private var buildings: [Campus: [String: Building]] = [:]
 
-    private init() {}
+    static var shared: ElectricityHelper = ElectricityHelper()
 
-    static func create() async -> ElectricityHelper? {
-        let helper = ElectricityHelper()
-        let success = await helper.initializeBuildings()
-        return success ? helper : nil
+    private init() {
+        Task {
+            await initializeBuildings()
+        }
     }
 
-    private func initializeBuildings() async -> Bool {
+    private func initializeBuildings() async {
         do {
             for campus in Campus.allCases {
                 let buildings = try await campusCardHelper.getBuildings(for: campus)
@@ -26,9 +26,8 @@ actor ElectricityHelper {
                     uniqueKeysWithValues: buildings.map { ($0.name, $0) })
             }
         } catch {
-            return false
+            fatalError("Failed to initialize buildings: \(error)")
         }
-        return true
     }
 
     func validLocation(campusName: String, buildingName: String) -> Bool {
