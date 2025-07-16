@@ -9,12 +9,18 @@ actor ElectricityHelper {
     private let campusCardHelper = CampusCardHelper()
     private var buildings: [Campus: [String: Building]] = [:]
 
-    static var shared: ElectricityHelper = ElectricityHelper()
-
-    private init() {
+    private static let shared: ElectricityHelper = ElectricityHelper()
+    private lazy var initializationTask: Task<Void, Never> = {
         Task {
-            await initializeBuildings()
+            await self.initializeBuildings()
         }
+    }()
+
+    private init() {}
+
+    static func getInstance() async -> ElectricityHelper {
+        await shared.initializationTask.value
+        return shared
     }
 
     private func initializeBuildings() async {
@@ -30,10 +36,13 @@ actor ElectricityHelper {
         }
     }
 
-    func validLocation(campusName: String, buildingName: String) -> Bool {
-        guard let campus = Campus(rawValue: campusName) else { return false }
-        guard buildings[campus]?[buildingName] != nil else { return false }
-        return true
+    func validLocation(campusName: String, buildingName: String) throws {
+        guard let campus = Campus(rawValue: campusName) else {
+            throw ElectricityHelperError.invalidCampus
+        }
+        guard buildings[campus]?[buildingName] != nil else {
+            throw ElectricityHelperError.buildingNotFound
+        }
     }
 
     func getElectricity(campusName: String, buildingName: String, room: String) async throws

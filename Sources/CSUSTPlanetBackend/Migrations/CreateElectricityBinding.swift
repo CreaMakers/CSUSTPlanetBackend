@@ -11,7 +11,7 @@ struct CreateElectricityBinding: AsyncMigration {
             .field("room", .string, .required)
             .field("schedule_hour", .int, .required)
             .field("schedule_minute", .int, .required)
-            .unique(on: "student_id", "device_token", "campus", "building", "room")
+            .unique(on: "device_token", "campus", "building", "room")
             .create()
     }
 

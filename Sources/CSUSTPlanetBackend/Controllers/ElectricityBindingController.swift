@@ -23,11 +23,8 @@ struct ElectricityBindingController: RouteCollection {
     func create(req: Request) async throws -> HTTPStatus {
         let binding = try req.content.decode(ElectricityBindingDTO.self).toModel()
 
-        if !(await ElectricityHelper.shared.validLocation(
-            campusName: binding.campus, buildingName: binding.building))
-        {
-            throw Abort(.badRequest, reason: "Invalid location")
-        }
+        try await ElectricityHelper.getInstance().validLocation(
+            campusName: binding.campus, buildingName: binding.building)
 
         guard binding.scheduleHour >= 0 && binding.scheduleHour < 24 else {
             throw Abort(.badRequest, reason: "Invalid schedule hour")
@@ -38,7 +35,7 @@ struct ElectricityBindingController: RouteCollection {
         }
 
         guard
-            (try? await ElectricityHelper.shared.getElectricity(
+            (try? await ElectricityHelper.getInstance().getElectricity(
                 campusName: binding.campus,
                 buildingName: binding.building,
                 room: binding.room
@@ -48,7 +45,6 @@ struct ElectricityBindingController: RouteCollection {
         }
 
         let existingBinding = try await ElectricityBinding.query(on: req.db)
-            .filter(\.$studentId, .equal, binding.studentId)
             .filter(\.$deviceToken, .equal, binding.deviceToken)
             .filter(\.$campus, .equal, binding.campus)
             .filter(\.$building, .equal, binding.building)
