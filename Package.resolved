@@ -1,5 +1,5 @@
 {
-  "originHash" : "2f425a83943a752ad4e4149b5a5d5e23516d7106127c3d5c6faf9bec18564591",
+  "originHash" : "59e8a862b22e150c395476274fa6b5fd45a16211d6a93b40a5f515092fb8fcab",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -56,12 +56,21 @@
       }
     },
     {
+      "identity" : "cryptoswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/krzyzanowskim/CryptoSwift.git",
+      "state" : {
+        "revision" : "e45a26384239e028ec87fbcc788f513b67e10d8f",
+        "version" : "1.9.0"
+      }
+    },
+    {
       "identity" : "csustkit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/zHElEARN/CSUSTKit.git",
       "state" : {
-        "revision" : "15f320048cbfe4c7422b15b1a2fc0d489707efca",
-        "version" : "1.0.17"
+        "revision" : "757ec7a5e6840b24d13610e1159e02e743241b05",
+        "version" : "1.0.19"
       }
     },
     {

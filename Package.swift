@@ -16,8 +16,8 @@ let package = Package(
         // 🔵 Non-blocking, event-driven networking for Swift. Used for custom executors
         .package(url: "https://github.com/apple/swift-nio.git", from: "2.65.0"),
         .package(url: "https://github.com/vapor/apns.git", from: "5.0.0"),
-        .package(url: "https://github.com/MihaelIsaev/VaporCron.git", from:"2.6.0"),
-        .package(url: "https://github.com/zHElEARN/CSUSTKit.git", from: "1.0.17"),
+        .package(url: "https://github.com/MihaelIsaev/VaporCron.git", from: "2.6.0"),
+        .package(url: "https://github.com/zHElEARN/CSUSTKit.git", from: "1.0.19"),
     ],
     targets: [
         .executableTarget(
