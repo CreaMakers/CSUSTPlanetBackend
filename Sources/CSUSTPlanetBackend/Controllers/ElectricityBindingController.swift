@@ -12,7 +12,7 @@ struct ElectricityBindingController: RouteCollection {
     }
 
     @Sendable
-    func cancelSchedules(req: Request) async throws -> HTTPStatus {
+    func cancelSchedules(req: Request) async throws -> [ElectricityBindingDTO] {
         let deviceToken = try req.parameters.require("deviceToken")
 
         let bindings = try await ElectricityBinding.query(on: req.db)
@@ -25,7 +25,7 @@ struct ElectricityBindingController: RouteCollection {
             try await binding.delete(on: req.db)
         }
 
-        return .ok
+        return bindings.map { $0.toDTO() }
     }
 
     @Sendable
@@ -62,7 +62,7 @@ struct ElectricityBindingController: RouteCollection {
     }
 
     @Sendable
-    func create(req: Request) async throws -> HTTPStatus {
+    func create(req: Request) async throws -> ElectricityBindingDTO {
         let binding = try req.content.decode(ElectricityBindingDTO.self).toModel()
 
         try await ElectricityHelper.getInstance().validLocation(
@@ -116,6 +116,6 @@ struct ElectricityBindingController: RouteCollection {
 
         try await ElectricityJob.shared.schedule(app: req.application, electricityBinding: binding)
 
-        return .created
+        return binding.toDTO()
     }
 }
