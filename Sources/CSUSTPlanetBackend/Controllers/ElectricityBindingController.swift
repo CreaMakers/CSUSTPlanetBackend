@@ -5,9 +5,10 @@ struct ElectricityBindingController: RouteCollection {
     func boot(routes: any RoutesBuilder) throws {
         let electricityBindings = routes.grouped("electricity-bindings")
 
-        electricityBindings.post(use: self.create)
+        electricityBindings.post(use: self.createSchedule)
         electricityBindings.get(":deviceToken", use: self.getSchedules)
         electricityBindings.delete(":deviceToken", use: self.cancelSchedules)
+        electricityBindings.get([":deviceToken", ":id"], use: self.getScheduleById)
         electricityBindings.delete([":deviceToken", ":id"], use: self.cancelScheduleById)
     }
 
@@ -52,6 +53,26 @@ struct ElectricityBindingController: RouteCollection {
     }
 
     @Sendable
+    func getScheduleById(req: Request) async throws -> ElectricityBindingDTO {
+        let deviceToken = try req.parameters.require("deviceToken")
+        let id = try req.parameters.require("id")
+
+        guard let uuid = UUID(uuidString: id) else {
+            throw Abort(.badRequest, reason: "Invalid UUID format for ID")
+        }
+
+        let binding = try await ElectricityBinding.query(on: req.db)
+            .filter(\.$deviceToken, .equal, deviceToken)
+            .filter(\.$id, .equal, uuid)
+            .first()
+        guard let binding = binding else {
+            throw Abort(.notFound, reason: "ElectricityBinding not found")
+        }
+
+        return binding.toDTO()
+    }
+
+    @Sendable
     func getSchedules(req: Request) async throws -> [ElectricityBindingDTO] {
         let deviceToken = try req.parameters.require("deviceToken")
         let bindings = try await ElectricityBinding.query(on: req.db)
@@ -62,7 +83,7 @@ struct ElectricityBindingController: RouteCollection {
     }
 
     @Sendable
-    func create(req: Request) async throws -> ElectricityBindingDTO {
+    func createSchedule(req: Request) async throws -> ElectricityBindingDTO {
         let binding = try req.content.decode(ElectricityBindingDTO.self).toModel()
 
         try await ElectricityHelper.getInstance().validLocation(
