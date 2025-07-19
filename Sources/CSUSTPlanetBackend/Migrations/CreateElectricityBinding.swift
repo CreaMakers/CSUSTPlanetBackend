@@ -6,6 +6,7 @@ struct CreateElectricityBinding: AsyncMigration {
             .id()
             .field("student_id", .string, .required)
             .field("device_token", .string, .required)
+            .field("is_debug", .bool, .required)
             .field("campus", .string, .required)
             .field("building", .string, .required)
             .field("room", .string, .required)

@@ -16,6 +16,8 @@ public func configure(_ app: Application) async throws {
 
     app.migrations.add(CreateElectricityBinding())
 
+    try await app.autoMigrate()
+
     guard let keyIdentifier = Environment.get("APNS_KEY_IDENTIFIER"),
         let teamIdentifier = Environment.get("APNS_TEAM_IDENTIFIER"),
         let privateKeyPath = Environment.get("APNS_PRIVATE_KEY_PATH")
@@ -27,20 +29,38 @@ public func configure(_ app: Application) async throws {
     let privateKeyString = String(data: privateKeyData, encoding: .utf8)!
     let privateKey = try P256.Signing.PrivateKey(pemRepresentation: privateKeyString)
 
-    let apnsConfig = APNSClientConfiguration(
+    let apnsConfigDev = APNSClientConfiguration(
         authenticationMethod: .jwt(
             privateKey: privateKey,
             keyIdentifier: keyIdentifier,
             teamIdentifier: teamIdentifier
         ),
-        environment: .development)
+        environment: .development
+    )
 
     await app.apns.containers.use(
-        apnsConfig,
+        apnsConfigDev,
         eventLoopGroupProvider: .shared(app.eventLoopGroup),
         responseDecoder: JSONDecoder(),
         requestEncoder: JSONEncoder(),
-        as: .default
+        as: .development
+    )
+
+    let apnsConfigProd = APNSClientConfiguration(
+        authenticationMethod: .jwt(
+            privateKey: privateKey,
+            keyIdentifier: keyIdentifier,
+            teamIdentifier: teamIdentifier
+        ),
+        environment: .production
+    )
+
+    await app.apns.containers.use(
+        apnsConfigProd,
+        eventLoopGroupProvider: .shared(app.eventLoopGroup),
+        responseDecoder: JSONDecoder(),
+        requestEncoder: JSONEncoder(),
+        as: .production
     )
 
     let bindings = try await ElectricityBinding.query(on: app.db).all()

@@ -1,5 +1,6 @@
 import APNSCore
 import Vapor
+import VaporAPNS
 
 struct ElectricityBindingController: RouteCollection {
     func boot(routes: any RoutesBuilder) throws {
@@ -126,9 +127,12 @@ struct ElectricityBindingController: RouteCollection {
             badge: 0
         )
 
+        let environment: APNSContainers.ID = binding.isDebug ? .development : .production
+
         guard
-            (try? await req.apns.client.sendAlertNotification(
-                alert, deviceToken: binding.deviceToken)) != nil
+            (try? await req.apns.client(environment)
+                .sendAlertNotification(
+                    alert, deviceToken: binding.deviceToken)) != nil
         else {
             throw Abort(.badRequest, reason: "Device token is invalid or APNS failed")
         }
