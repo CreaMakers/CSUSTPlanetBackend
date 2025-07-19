@@ -18,26 +18,38 @@ public func configure(_ app: Application) async throws {
 
     try await app.autoMigrate()
 
-    guard let keyIdentifier = Environment.get("APNS_KEY_IDENTIFIER"),
-        let teamIdentifier = Environment.get("APNS_TEAM_IDENTIFIER"),
-        let privateKeyPath = Environment.get("APNS_PRIVATE_KEY_PATH")
-    else {
-        fatalError("Missing APNS configuration")
+    guard let teamIdentifier = Environment.get("APNS_TEAM_IDENTIFIER") else {
+        fatalError("Missing APNS Team Identifier")
     }
 
-    let privateKeyData = try Data(contentsOf: URL(fileURLWithPath: privateKeyPath))
-    let privateKeyString = String(data: privateKeyData, encoding: .utf8)!
-    let privateKey = try P256.Signing.PrivateKey(pemRepresentation: privateKeyString)
+    guard let sandboxKeyIdentifier = Environment.get("SANDBOX_APNS_KEY_IDENTIFIER"),
+        let sandboxPrivateKeyPath = Environment.get("SANDBOX_APNS_PRIVATE_KEY_PATH")
+    else {
+        fatalError("Missing Sandbox APNS configuration")
+    }
+
+    guard let prodKeyIdentifier = Environment.get("PRODUCTION_APNS_KEY_IDENTIFIER"),
+        let prodPrivateKeyPath = Environment.get("PRODUCTION_APNS_PRIVATE_KEY_PATH")
+    else {
+        fatalError("Missing Production APNS configuration")
+    }
+
+    let sandboxPrivateKeyData = try Data(contentsOf: URL(fileURLWithPath: sandboxPrivateKeyPath))
+    let sandboxPrivateKeyString = String(data: sandboxPrivateKeyData, encoding: .utf8)!
+    let sandboxPrivateKey = try P256.Signing.PrivateKey(pemRepresentation: sandboxPrivateKeyString)
+
+    let prodPrivateKeyData = try Data(contentsOf: URL(fileURLWithPath: prodPrivateKeyPath))
+    let prodPrivateKeyString = String(data: prodPrivateKeyData, encoding: .utf8)!
+    let prodPrivateKey = try P256.Signing.PrivateKey(pemRepresentation: prodPrivateKeyString)
 
     let apnsConfigDev = APNSClientConfiguration(
         authenticationMethod: .jwt(
-            privateKey: privateKey,
-            keyIdentifier: keyIdentifier,
+            privateKey: sandboxPrivateKey,
+            keyIdentifier: sandboxKeyIdentifier,
             teamIdentifier: teamIdentifier
         ),
         environment: .development
     )
-
     await app.apns.containers.use(
         apnsConfigDev,
         eventLoopGroupProvider: .shared(app.eventLoopGroup),
@@ -48,13 +60,12 @@ public func configure(_ app: Application) async throws {
 
     let apnsConfigProd = APNSClientConfiguration(
         authenticationMethod: .jwt(
-            privateKey: privateKey,
-            keyIdentifier: keyIdentifier,
+            privateKey: prodPrivateKey,
+            keyIdentifier: prodKeyIdentifier,
             teamIdentifier: teamIdentifier
         ),
         environment: .production
     )
-
     await app.apns.containers.use(
         apnsConfigProd,
         eventLoopGroupProvider: .shared(app.eventLoopGroup),
