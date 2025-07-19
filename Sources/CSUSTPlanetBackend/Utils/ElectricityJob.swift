@@ -1,6 +1,7 @@
 import APNSCore
 import NIOCronScheduler
 import Vapor
+import VaporAPNS
 
 actor ElectricityJob {
     static let shared = ElectricityJob()
@@ -56,7 +57,9 @@ actor ElectricityJob {
                         topic: "com.zhelearn.CSUSTPlanet",
                         badge: 0
                     )
-                    try await app.apns.client.sendAlertNotification(
+                    let environment: APNSContainers.ID =
+                        electricityBinding.isDebug ? .development : .production
+                    try await app.apns.client(environment).sendAlertNotification(
                         alert, deviceToken: electricityBinding.deviceToken)
                     app.logger.info(
                         "Electricity notification sent successfully for \(electricityBinding.room)")
