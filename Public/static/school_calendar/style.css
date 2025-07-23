@@ -1,0 +1,143 @@
+body {
+  background-color: #fff;
+  color: #333;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.university-name {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  margin: 0 0 10px 0;
+}
+
+.academic-year {
+  font-size: 22px;
+  font-weight: 500;
+  color: #333;
+  margin: 0 0 8px 0;
+}
+
+.semester-info {
+  font-size: 18px;
+  font-weight: 400;
+  color: #666;
+  margin: 0 0 20px 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  background-color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+th,
+td {
+  border: 1px solid #ccc;
+  padding: 4px;
+  text-align: center;
+  font-size: 20px;
+  height: 60px;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.week-column {
+  width: 25px;
+}
+
+.month-column {
+  width: 20px;
+  font-weight: bold;
+}
+
+.day-column {
+  width: 10px;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.note-column {
+  width: 60px;
+  text-align: left;
+}
+
+thead {
+  background-color: #f2f2f2;
+  color: #333;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.weekend-day {
+  color: red;
+}
+
+.week-number {
+  font-weight: bold;
+  color: #555;
+}
+
+.month-cell {
+  font-weight: bold;
+  font-size: 18px;
+  vertical-align: middle;
+  background-color: #f9f9f9;
+  transition: background-color 0.3s ease;
+}
+
+/* 深色模式样式 */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+  }
+
+  .university-name,
+  .academic-year {
+    color: #f0f0f0;
+  }
+
+  .semester-info {
+    color: #b0b0b0;
+  }
+
+  table {
+    background-color: #2d2d2d;
+  }
+
+  th,
+  td {
+    border-color: #555;
+    background-color: #2d2d2d;
+    color: #e0e0e0;
+  }
+
+  thead {
+    background-color: #404040;
+    color: #f0f0f0;
+  }
+
+  .weekend-day {
+    color: #ff6b6b;
+  }
+
+  .week-number {
+    color: #b0b0b0;
+  }
+
+  .month-cell {
+    background-color: #383838;
+    color: #f0f0f0;
+  }
+}
