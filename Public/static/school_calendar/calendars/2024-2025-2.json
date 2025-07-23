@@ -1,0 +1,19 @@
+{
+  "calendar": {
+    "calendarStart": "2025-02-09",
+    "calendarEnd": "2025-07-26",
+    "semesterStart": "2025-02-24",
+    "semesterEnd": "2025-07-12",
+    "autoHighlight": true,
+    "academicYear": "2024-2025学年度校历",
+    "semesterInfo": "（第二学期）"
+  },
+  "notes": [
+    { "row": 2, "content": "2月24日正式上课", "needNumber": true },
+    { "row": 16, "content": "在15-19周安排选课", "needNumber": true },
+    { "row": 18, "content": "英语四、六级考试", "needNumber": true },
+    { "row": 21, "content": "暑假八周", "needNumber": true },
+    { "row": 22, "content": "(7月12日~9月5日)" }
+  ],
+  "customWeekRanges": [{ "startRow": 23, "endRow": 24, "content": "假期" }]
+}

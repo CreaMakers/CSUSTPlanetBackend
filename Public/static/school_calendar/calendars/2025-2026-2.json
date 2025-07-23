@@ -1,0 +1,25 @@
+{
+  "calendar": {
+    "calendarStart": "2026-02-15",
+    "calendarEnd": "2026-08-01",
+    "semesterStart": "2026-03-09",
+    "semesterEnd": "2026-07-18",
+    "autoHighlight": true,
+    "academicYear": "2025-2026学年度校历",
+    "semesterInfo": "（第二学期）"
+  },
+  "notes": [
+    { "row": 3, "content": "3月2日-3月8日为教学准备周", "needNumber": true },
+    { "row": 4, "content": "3月9日正式上课", "needNumber": true },
+    { "row": 17, "content": "在15-19周安排选课", "needNumber": true },
+    { "row": 18, "content": "英语四、六级考试", "needNumber": true },
+    { "row": 21, "content": "暑假7周", "needNumber": true },
+    { "row": 22, "content": "(7月18日~9月4日)" }
+  ],
+
+  "customWeekRanges": [
+    { "startRow": 1, "endRow": 2, "content": "假期" },
+    { "startRow": 3, "endRow": 3, "content": "准备周" },
+    { "startRow": 23, "endRow": 24, "content": "假期" }
+  ]
+}

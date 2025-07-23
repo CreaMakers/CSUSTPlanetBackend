@@ -1,0 +1,21 @@
+{
+  "calendar": {
+    "calendarStart": "2024-08-18",
+    "calendarEnd": "2025-02-01",
+    "semesterStart": "2024-09-02",
+    "semesterEnd": "2025-01-18",
+    "autoHighlight": true,
+    "academicYear": "2024-2025学年度校历",
+    "semesterInfo": "（第一学期）"
+  },
+  "notes": [
+    { "row": 2, "content": "9月2日正式上课", "needNumber": true },
+    { "row": 8, "content": "在第8~9周安排全校体育运动会", "needNumber": true },
+    { "row": 16, "content": "在15-19周安排选课", "needNumber": true },
+    { "row": 17, "content": "英语四、六级考试", "needNumber": true },
+    { "row": 21, "content": "寒假五周", "needNumber": true },
+    { "row": 22, "content": "(1月18日~2月21日)" },
+    { "row": 23, "content": "1月29日春节" }
+  ],
+  "customWeekRanges": [{ "startRow": 23, "endRow": 24, "content": "假期" }]
+}

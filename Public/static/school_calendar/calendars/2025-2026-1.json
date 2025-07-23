@@ -1,0 +1,21 @@
+{
+  "calendar": {
+    "calendarStart": "2025-08-17",
+    "calendarEnd": "2026-01-31",
+    "semesterStart": "2025-09-08",
+    "semesterEnd": "2026-01-24",
+    "autoHighlight": true,
+    "academicYear": "2025-2026学年度校历",
+    "semesterInfo": "（第一学期）"
+  },
+  "notes": [
+    { "row": 4, "content": "9月8日正式上课", "needNumber": true },
+    { "row": 8, "content": "在第7~8周安排全校体育运动会", "needNumber": true },
+    { "row": 17, "content": "在15-19周安排选课", "needNumber": true },
+    { "row": 18, "content": "英语四、六级考试", "needNumber": true },
+    { "row": 21, "content": "寒假五周", "needNumber": true },
+    { "row": 22, "content": "(1月24日~3月1日)" },
+    { "row": 23, "content": "2月17日春节" }
+  ],
+  "customWeekRanges": [{ "startRow": 1, "endRow": 3, "content": "假期" }]
+}

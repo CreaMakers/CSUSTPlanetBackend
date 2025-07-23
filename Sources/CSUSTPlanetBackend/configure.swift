@@ -18,6 +18,9 @@ public func configure(_ app: Application) async throws {
 
     try await app.autoMigrate()
 
+    let fileMiddleware = FileMiddleware(publicDirectory: app.directory.publicDirectory)
+    app.middleware.use(fileMiddleware)
+
     guard let teamIdentifier = Environment.get("APNS_TEAM_IDENTIFIER") else {
         fatalError("Missing APNS Team Identifier")
     }
