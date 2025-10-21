@@ -21,7 +21,7 @@ actor ElectricityJob {
 
     func cancelJob(app: Application, electricityBinding: ElectricityBinding) throws {
         guard let id = electricityBinding.id?.uuidString else {
-            throw Abort(.badRequest, reason: "ElectricityBinding ID is missing")
+            throw Abort(.badRequest, reason: "缺少电量绑定ID")
         }
         if let job = jobs[id] {
             job.cancel()
@@ -32,7 +32,7 @@ actor ElectricityJob {
 
     func schedule(app: Application, electricityBinding: ElectricityBinding) throws {
         guard let id = electricityBinding.id?.uuidString else {
-            throw Abort(.badRequest, reason: "ElectricityBinding ID is missing")
+            throw Abort(.badRequest, reason: "缺少电量绑定ID")
         }
 
         let cronExpression = beijingTimeToCron(minute: electricityBinding.scheduleMinute, hour: electricityBinding.scheduleHour)
