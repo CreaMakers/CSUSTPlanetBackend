@@ -54,8 +54,7 @@ actor ElectricityJob {
                         topic: "com.zhelearn.CSUSTPlanet",
                         badge: 0
                     )
-                    let environment: APNSContainers.ID = electricityBinding.isDebug ? .development : .production
-                    try await app.apns.client(environment).sendAlertNotification(alert, deviceToken: electricityBinding.deviceToken)
+                    try await app.apns.client.sendAlertNotification(alert, deviceToken: electricityBinding.deviceToken)
                     app.logger.info("Electricity notification sent successfully for \(electricityBinding.room)")
                 } catch let apnsError as APNSError {
                     switch apnsError.reason {

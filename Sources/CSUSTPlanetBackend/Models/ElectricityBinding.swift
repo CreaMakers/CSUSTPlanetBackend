@@ -12,9 +12,6 @@ final class ElectricityBinding: Model, @unchecked Sendable {
     @Field(key: "device_token")
     var deviceToken: String
 
-    @Field(key: "is_debug")
-    var isDebug: Bool
-
     @Field(key: "campus")
     var campus: String
 
@@ -36,7 +33,6 @@ final class ElectricityBinding: Model, @unchecked Sendable {
         id: UUID? = nil,
         studentId: String,
         deviceToken: String,
-        isDebug: Bool,
         campus: String,
         building: String,
         room: String,
@@ -46,7 +42,6 @@ final class ElectricityBinding: Model, @unchecked Sendable {
         self.id = id
         self.studentId = studentId
         self.deviceToken = deviceToken
-        self.isDebug = isDebug
         self.campus = campus
         self.building = building
         self.room = room
@@ -59,7 +54,6 @@ final class ElectricityBinding: Model, @unchecked Sendable {
             id: self.id,
             studentId: self.studentId,
             deviceToken: self.deviceToken,
-            isDebug: self.isDebug,
             campus: self.campus,
             building: self.building,
             room: self.room,

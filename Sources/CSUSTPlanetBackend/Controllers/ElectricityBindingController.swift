@@ -106,9 +106,7 @@ struct ElectricityBindingController: RouteCollection {
             badge: 0
         )
 
-        let environment: APNSContainers.ID = binding.isDebug ? .development : .production
-
-        guard (try? await req.apns.client(environment).sendAlertNotification(alert, deviceToken: binding.deviceToken)) != nil else {
+        guard (try? await req.apns.client.sendAlertNotification(alert, deviceToken: binding.deviceToken)) != nil else {
             throw Abort(.badRequest, reason: "无法发送测试通知")
         }
 

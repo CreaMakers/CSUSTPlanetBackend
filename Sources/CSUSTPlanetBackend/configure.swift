@@ -12,71 +12,65 @@ public func configure(_ app: Application) async throws {
     // uncomment to serve files from /Public folder
     // app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
 
-    app.databases.use(DatabaseConfigurationFactory.sqlite(.file("db.sqlite")), as: .sqlite)
-    app.migrations.add(CreateElectricityBinding())
-    try await app.autoMigrate()
-
     app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
 
-    guard let teamIdentifier = Environment.get("APNS_TEAM_IDENTIFIER") else {
-        fatalError("Missing APNS Team Identifier")
-    }
-    guard let sandboxKeyIdentifier = Environment.get("SANDBOX_APNS_KEY_IDENTIFIER"),
-        let sandboxPrivateKeyPath = Environment.get("SANDBOX_APNS_PRIVATE_KEY_PATH")
+    try await setupDatabase(app)
+    try await setupAPNS(app)
+    try await setupBindings(app)
+
+    // register routes
+    try await routes(app)
+}
+
+private func setupDatabase(_ app: Application) async throws {
+    app.databases.use(.sqlite(.file("db.sqlite")), as: .sqlite)
+    app.migrations.add(CreateElectricityBinding())
+    try await app.autoMigrate()
+}
+
+// MARK: - APNS Setup
+
+private func setupAPNS(_ app: Application) async throws {
+    guard let keyIdentifier = Environment.get("APNS_KEY_IDENTIFIER"),
+        let privateKeyPath = Environment.get("APNS_PRIVATE_KEY_PATH"),
+        let teamIdentifier = Environment.get("APNS_TEAM_IDENTIFIER")
     else {
-        fatalError("Missing Sandbox APNS configuration")
+        fatalError("缺少 APNS 配置环境变量")
     }
-    guard let prodKeyIdentifier = Environment.get("PRODUCTION_APNS_KEY_IDENTIFIER"),
-        let prodPrivateKeyPath = Environment.get("PRODUCTION_APNS_PRIVATE_KEY_PATH")
+
+    guard let apnsEnvironmentString = Environment.get("APNS_ENVIRONMENT"),
+        apnsEnvironmentString == "production" || apnsEnvironmentString == "development"
     else {
-        fatalError("Missing Production APNS configuration")
+        fatalError("缺少 APNS_ENVIRONMENT 环境变量")
+    }
+    let apnsEnvironment: APNSEnvironment = apnsEnvironmentString == "production" ? .production : .development
+
+    guard let privateKeyString = String(data: try Data(contentsOf: URL(fileURLWithPath: privateKeyPath)), encoding: .utf8) else {
+        fatalError("无法读取 APNS 私钥文件")
     }
 
-    let sandboxPrivateKeyData = try Data(contentsOf: URL(fileURLWithPath: sandboxPrivateKeyPath))
-    let sandboxPrivateKeyString = String(data: sandboxPrivateKeyData, encoding: .utf8)!
-    let sandboxPrivateKey = try P256.Signing.PrivateKey(pemRepresentation: sandboxPrivateKeyString)
-
-    let prodPrivateKeyData = try Data(contentsOf: URL(fileURLWithPath: prodPrivateKeyPath))
-    let prodPrivateKeyString = String(data: prodPrivateKeyData, encoding: .utf8)!
-    let prodPrivateKey = try P256.Signing.PrivateKey(pemRepresentation: prodPrivateKeyString)
-
-    let apnsConfigDev = APNSClientConfiguration(
-        authenticationMethod: .jwt(
-            privateKey: sandboxPrivateKey,
-            keyIdentifier: sandboxKeyIdentifier,
-            teamIdentifier: teamIdentifier
-        ),
-        environment: .development
-    )
     let apnsConfigProd = APNSClientConfiguration(
         authenticationMethod: .jwt(
-            privateKey: prodPrivateKey,
-            keyIdentifier: prodKeyIdentifier,
+            privateKey: try P256.Signing.PrivateKey(pemRepresentation: privateKeyString),
+            keyIdentifier: keyIdentifier,
             teamIdentifier: teamIdentifier
         ),
-        environment: .production
-    )
-
-    await app.apns.containers.use(
-        apnsConfigDev,
-        eventLoopGroupProvider: .shared(app.eventLoopGroup),
-        responseDecoder: JSONDecoder(),
-        requestEncoder: JSONEncoder(),
-        as: .development
+        environment: apnsEnvironment
     )
     await app.apns.containers.use(
         apnsConfigProd,
         eventLoopGroupProvider: .shared(app.eventLoopGroup),
         responseDecoder: JSONDecoder(),
         requestEncoder: JSONEncoder(),
-        as: .production
+        as: .default
     )
+}
 
+// MARK: - Bindings Setup
+
+private func setupBindings(_ app: Application) async throws {
     let bindings = try await ElectricityBinding.query(on: app.db).all()
     for binding in bindings {
         try await ElectricityJob.shared.schedule(app: app, electricityBinding: binding)
     }
-
-    // register routes
-    try await routes(app)
 }

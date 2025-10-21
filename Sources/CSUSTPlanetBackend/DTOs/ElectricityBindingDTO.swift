@@ -5,7 +5,6 @@ struct ElectricityBindingDTO: Content {
     var id: UUID?
     var studentId: String
     var deviceToken: String
-    var isDebug: Bool
     var campus: String
     var building: String
     var room: String
@@ -16,7 +15,6 @@ struct ElectricityBindingDTO: Content {
         return ElectricityBinding(
             studentId: studentId,
             deviceToken: deviceToken,
-            isDebug: isDebug,
             campus: campus,
             building: building,
             room: room,
