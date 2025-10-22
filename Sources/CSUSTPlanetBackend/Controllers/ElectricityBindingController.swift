@@ -45,7 +45,7 @@ struct ElectricityBindingController: RouteCollection {
         let newBindings = syncListDTO.toModels()
         for binding in newBindings {
             try await binding.save(on: req.db)
-            try await ElectricityJob.shared.schedule(app: req.application, electricityBinding: binding)
+            try await ElectricityJob.shared.scheduleJob(app: req.application, electricityBinding: binding)
         }
 
         return .noContent
@@ -146,7 +146,7 @@ struct ElectricityBindingController: RouteCollection {
 
         // 保存绑定信息并调度任务
         try await binding.save(on: req.db)
-        try await ElectricityJob.shared.schedule(app: req.application, electricityBinding: binding)
+        try await ElectricityJob.shared.scheduleJob(app: req.application, electricityBinding: binding)
 
         return binding.toDTO()
     }

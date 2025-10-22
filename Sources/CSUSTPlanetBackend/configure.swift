@@ -72,6 +72,6 @@ private func setupAPNS(_ app: Application) async throws {
 private func setupBindings(_ app: Application) async throws {
     let bindings = try await ElectricityBinding.query(on: app.db).all()
     for binding in bindings {
-        try await ElectricityJob.shared.schedule(app: app, electricityBinding: binding)
+        try await ElectricityJob.shared.scheduleJob(app: app, electricityBinding: binding)
     }
 }
