@@ -16,8 +16,8 @@ struct ElectricityBindingController: RouteCollection {
     // MARK: - Sync Schedules
 
     @Sendable
-    func syncSchedules(req: Request) async throws -> [ElectricityBindingDTO] {
-        return []
+    func syncSchedules(req: Request) async throws -> HTTPStatus {
+        return .noContent
     }
 
     // MARK: - Cancel Schedule By ID

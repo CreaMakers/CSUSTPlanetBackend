@@ -25,6 +25,7 @@ public func configure(_ app: Application) async throws {
 private func setupDatabase(_ app: Application) async throws {
     app.databases.use(.sqlite(.file("db.sqlite")), as: .sqlite)
     app.migrations.add(CreateElectricityBinding())
+    app.migrations.add(RemoveIsDebugFromElectricityBinding())
     try await app.autoMigrate()
 }
 
