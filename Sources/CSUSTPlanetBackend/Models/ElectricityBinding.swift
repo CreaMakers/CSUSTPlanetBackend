@@ -61,4 +61,14 @@ final class ElectricityBinding: Model, @unchecked Sendable {
             scheduleMinute: self.scheduleMinute
         )
     }
+
+    func toSyncDTO() -> ElectricityBindingSyncDTO {
+        .init(
+            campus: self.campus,
+            building: self.building,
+            room: self.room,
+            scheduleHour: self.scheduleHour,
+            scheduleMinute: self.scheduleMinute
+        )
+    }
 }

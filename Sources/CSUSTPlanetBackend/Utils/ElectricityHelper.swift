@@ -1,8 +1,18 @@
 import CSUSTKit
+import Foundation
 
-enum ElectricityHelperError: Error {
+enum ElectricityHelperError: Error, LocalizedError {
     case invalidCampus
     case buildingNotFound
+
+    var errorDescription: String? {
+        switch self {
+        case .invalidCampus:
+            return "校区名称无效"
+        case .buildingNotFound:
+            return "未找到指定校区的宿舍楼栋"
+        }
+    }
 }
 
 actor ElectricityHelper {

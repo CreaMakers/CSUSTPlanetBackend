@@ -12,7 +12,7 @@ struct ElectricityBindingDTO: Content {
     var scheduleMinute: Int
 
     func toModel() -> ElectricityBinding {
-        return ElectricityBinding(
+        .init(
             studentId: studentId,
             deviceToken: deviceToken,
             campus: campus,
